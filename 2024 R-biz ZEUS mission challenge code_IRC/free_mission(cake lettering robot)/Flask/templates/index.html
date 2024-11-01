@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <title>ZEUS ROBOT</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #fff5e1;
+      color: #333;
+      text-align: center;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+
+    header {
+      font-family: 'Jua', sans-serif;
+      background-color: #f7c8d3;
+      /* padding: 20px; */
+      font-size: 3em;
+      color: #ffffff;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .circle-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      position: fixed;
+      top: 120px;
+      /* keypad보다 15px 위에 위치하도록 설정 */
+      left: 120px;
+      /* keypad의 왼쪽 위치와 맞춤 */
+    }
+
+    .circle-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      /* 원형 버튼 */
+      margin: 0 10px;
+      /* 버튼 사이의 간격 */
+      border: none;
+      /* 기본 테두리 제거 */
+      cursor: pointer;
+      /* 커서를 포인터로 변경하여 클릭 가능하게 표시 */
+    }
+
+    .strawberry-button {
+      background-color: #f14671;
+      /* 딸기색 */
+    }
+
+    .caramel-button {
+      background-color: #d8932c;
+      /* 카라멜 색상 */
+    }
+
+    .choco-button {
+      background-color: #683e20;
+      /* 초코 색상 */
+    }
+
+    .cake {
+      margin: 20px auto;
+      width: 680px;
+      height: 680px;
+      background-color: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+      /* transform: translate(-10px, -15px); */
+    }
+
+    .image-container {
+      position: absolute;
+      top: 200px;
+      /* 화면 상단에서 이미지의 위치 */
+      right: 80px;
+      /* 오른쪽에서의 간격 */
+      display: flex;
+      align-items: center;
+      min-width: 300px;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(5, 60px);
+      grid-template-rows: repeat(6, 60px);
+      grid-gap: 10px;
+      position: fixed;
+      top: 200px;
+      left: 50px;
+    }
+
+    .keypad button {
+      font-size: 20px;
+      width: 60px;
+      height: 60px;
+      margin: 5px;
+      border: none;
+      background-color: #f7c8d3;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .draggable {
+      width: 40px;
+      /* 크기를 줄임 */
+      height: 40px;
+      /* 크기를 줄임 */
+      background-color: transparent;
+      color: #333;
+      font-size: 30px;
+      /* 글자 크기도 조정 */
+      text-align: center;
+      line-height: 40px;
+      /* 줄 높이 조정 */
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      border: 2px solid #f7c8d3;
+    }
+
+    .dropzone {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 5px;
+      left: -10px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      /* 버튼들을 수평 중앙 정렬 */
+      align-items: center;
+      /* 수직 가운데 정렬 */
+      margin-top: 20px;
+    }
+
+    .order-button {
+      background-color: #f7c8d3;
+      color: white;
+      font-size: 20px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      margin-right: 10px;
+      /* 버튼 사이의 간격 설정 */
+    }
+
+    .order-button:hover {
+      background-color: #f09aaa;
+    }
+
+    .clear-button {
+      background-color: #f7c8d3;
+      color: white;
+      font-size: 20px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .clear-button:hover {
+      background-color: #f09aaa;
+    }
+  </style>
+</head>
+
+<body>
+  <header>꿈빛파티시엘</header>
+
+  <div class="circle-container">
+    <button class="circle-button strawberry-button" onclick="changeKeypadColor('#fc5a8d')"></button>
+    <button class="circle-button caramel-button" onclick="changeKeypadColor('#c68e17')"></button>
+    <button class="circle-button choco-button" onclick="changeKeypadColor('#8B4513')"></button>
+  </div>
+
+
+  <div class="cake">
+    <div class="dropzone" id="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+  </div>
+  <div class="image-container">
+    <!-- JavaScript가 이미지를 추가할 위치 -->
+  </div>
+
+
+
+
+  <div class="keypad">
+    <div class="draggable" draggable="true" id="letter_A" ondragstart="drag(event)">A</div>
+    <div class="draggable" draggable="true" id="letter_B" ondragstart="drag(event)">B</div>
+    <div class="draggable" draggable="true" id="letter_C" ondragstart="drag(event)">C</div>
+    <div class="draggable" draggable="true" id="letter_D" ondragstart="drag(event)">D</div>
+    <div class="draggable" draggable="true" id="letter_E" ondragstart="drag(event)">E</div>
+    <div class="draggable" draggable="true" id="letter_F" ondragstart="drag(event)">F</div>
+    <div class="draggable" draggable="true" id="letter_G" ondragstart="drag(event)">G</div>
+    <div class="draggable" draggable="true" id="letter_H" ondragstart="drag(event)">H</div>
+    <div class="draggable" draggable="true" id="letter_I" ondragstart="drag(event)">I</div>
+    <div class="draggable" draggable="true" id="letter_J" ondragstart="drag(event)">J</div>
+    <div class="draggable" draggable="true" id="letter_K" ondragstart="drag(event)">K</div>
+    <div class="draggable" draggable="true" id="letter_L" ondragstart="drag(event)">L</div>
+    <div class="draggable" draggable="true" id="letter_M" ondragstart="drag(event)">M</div>
+    <div class="draggable" draggable="true" id="letter_N" ondragstart="drag(event)">N</div>
+    <div class="draggable" draggable="true" id="letter_O" ondragstart="drag(event)">O</div>
+    <div class="draggable" draggable="true" id="letter_P" ondragstart="drag(event)">P</div>
+    <div class="draggable" draggable="true" id="letter_Q" ondragstart="drag(event)">Q</div>
+    <div class="draggable" draggable="true" id="letter_R" ondragstart="drag(event)">R</div>
+    <div class="draggable" draggable="true" id="letter_S" ondragstart="drag(event)">S</div>
+    <div class="draggable" draggable="true" id="letter_T" ondragstart="drag(event)">T</div>
+    <div class="draggable" draggable="true" id="letter_U" ondragstart="drag(event)">U</div>
+    <div class="draggable" draggable="true" id="letter_V" ondragstart="drag(event)">V</div>
+    <div class="draggable" draggable="true" id="letter_W" ondragstart="drag(event)">W</div>
+    <div class="draggable" draggable="true" id="letter_X" ondragstart="drag(event)">X</div>
+    <div class="draggable" draggable="true" id="letter_Y" ondragstart="drag(event)">Y</div>
+    <div class="draggable" draggable="true" id="letter_Z" ondragstart="drag(event)">Z</div>
+    <div class="draggable" draggable="true" id="letter_♥" ondragstart="drag(event)">♥</div>
+    <div class="draggable" draggable="true" id="letter_★" ondragstart="drag(event)">★</div>
+    <div class="draggable" draggable="true" id="letter_⚡" ondragstart="drag(event)">⚡</div>
+  </div>
+
+  <div class="image-container">
+    <!-- 여기서 이미지가 동적으로 추가/제거됩니다 -->
+  </div>
+  <div class="button-container">
+    <button class="order-button" onclick="sendOrder()">주문하기</button>
+    <button class="clear-button" onclick="clearImage()">지우기</button>
+  </div>
+
+  <script>
+    let draggedElement = null;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drag(event) {
+      offsetX = event.offsetX;
+      offsetY = event.offsetY;
+
+      if (event.target.parentNode.className === "keypad") {
+        draggedElement = event.target.cloneNode(true);
+        draggedElement.id = event.target.id + "_" + new Date().getTime();
+        draggedElement.setAttribute("draggable", "true");
+        draggedElement.ondragstart = drag;
+      } else {
+        draggedElement = event.target;
+      }
+    }
+
+    function changeKeypadColor(color) {
+      // 모든 draggable 요소를 선택하여 반복 (드롭존에 있는 요소는 제외)
+      var draggableElements = document.querySelectorAll('.draggable');
+
+      draggableElements.forEach(function (element) {
+        // 드롭존에 이미 드롭된 요소인지 확인
+        if (!element.classList.contains('dropped')) {
+          element.style.color = color; // 폰트 색상을 변경
+        }
+      });
+    }
+
+    function drop(event) {
+      event.preventDefault();
+
+      var dropzone = document.getElementById("dropzone");
+      var rect = dropzone.getBoundingClientRect();
+      var x = event.clientX - rect.left - offsetX;
+      var y = event.clientY - rect.top - offsetY;
+
+      if (
+        x >= 0 &&
+        y >= 0 &&
+        x + draggedElement.offsetWidth <= dropzone.offsetWidth &&
+        y + draggedElement.offsetHeight <= dropzone.offsetHeight &&
+        !isOverlapping(x, y, draggedElement, dropzone)
+      ) {
+        draggedElement.style.position = "absolute";
+        draggedElement.style.left = x + "px";
+        draggedElement.style.top = y + "px";
+
+        if (!dropzone.contains(draggedElement)) {
+          dropzone.appendChild(draggedElement);
+          draggedElement.classList.add('dropped'); // 드롭된 요소에 'dropped' 클래스 추가
+        }
+      }
+    }
+
+
+    function isOverlapping(x, y, draggedElement, dropzone) {
+      var elements = dropzone.children;
+      for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+        if (element !== draggedElement) {
+          var rect1 = {
+            left: x,
+            top: y,
+            right: x + draggedElement.offsetWidth,
+            bottom: y + draggedElement.offsetHeight,
+          };
+          var rect2 = element.getBoundingClientRect();
+          var rect2Relative = {
+            left: rect2.left - dropzone.getBoundingClientRect().left,
+            top: rect2.top - dropzone.getBoundingClientRect().top,
+            right: rect2.right - dropzone.getBoundingClientRect().left,
+            bottom: rect2.bottom - dropzone.getBoundingClientRect().top,
+          };
+
+          if (
+            rect1.left < rect2Relative.right &&
+            rect1.right > rect2Relative.left &&
+            rect1.top < rect2Relative.bottom &&
+            rect1.bottom > rect2Relative.top
+          ) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    function clearImage() {
+      console.log("clearImage 함수가 호출되었습니다."); // 함수가 호출되었는지 확인하는 로그
+
+      const imageContainer = document.querySelector('.image-container');
+      if (imageContainer) {
+        const existingImg = imageContainer.querySelector('img');
+        if (existingImg) {
+          imageContainer.removeChild(existingImg);
+          alert("이미지가 삭제되었습니다.");
+        } else {
+          alert("삭제할 이미지가 없습니다.");
+        }
+      } else {
+        console.error("이미지 컨테이너를 찾을 수 없습니다.");
+      }
+    }
+
+    // 주문하기 버튼을 클릭하면 좌표와 값을 백엔드로 전송
+    function sendOrder() {
+      var dropzone = document.getElementById("dropzone");
+      var elements = dropzone.children;
+      var orderData = [];
+
+      // 드롭존의 크기를 반영하여 중심 좌표 계산
+      var dropzoneWidth = 680; // 드롭존의 폭 (픽셀 단위)
+      var dropzoneHeight = 680; // 드롭존의 높이 (픽셀 단위)
+
+      // 원 중심 좌표 (-400, 200) (실제 로봇 좌표)
+      var centerX = -400;
+      var centerY = 200;
+
+      // 색상 매핑
+      function mapColorToName(rgbColor) {
+        if (rgbColor === 'rgb(252, 90, 141)') { // 딸기색 RGB
+          return 'Strawberry';
+        } else if (rgbColor === 'rgb(198, 142, 23)') { // 카라멜색 RGB
+          return 'Caramel';
+        } else if (rgbColor === 'rgb(139, 69, 19)') { // 초코색 RGB
+          return 'Choco';
+        }
+        return 'unknown'; // 만약 해당하는 색상이 없다면 'unknown'
+      }
+      // 드롭존에 있는 모든 요소의 좌표와 문자를 수집
+      for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+        var character = element.innerText;
+        var color = window.getComputedStyle(element).color; // 현재 폰트 색상 가져오기
+        var colorName = mapColorToName(color); // 색상 이름으로 변환
+        var x = parseInt(element.style.left); // 요소의 X 좌표 (드롭존 기준)
+        var y = parseInt(element.style.top); // 요소의 Y 좌표 (드롭존 기준)
+
+        //   // 좌표 변환: 원 중심 좌표를 기준으로 변환
+        //   // X좌표: 드롭존 기준 X 좌표를 드롭존 중심으로 보정 후, 원 중심을 더함
+        //   var actualX = x - dropzoneWidth / 2 + centerX;
+        //   // Y좌표: 드롭존 기준 Y 좌표를 드롭존 중심으로 보정 후, 원 중심을 더함
+        //   var actualY = dropzoneHeight / 2 - y + centerY;
+
+        //   orderData.push({ character: character, x: actualX, y: actualY });
+        // 좌표 변환: 플롯 범위 기준으로 변환
+        var plotX = parseFloat((-500 + ((x / dropzoneWidth) * 200)).toFixed(2));
+        var plotY = parseFloat((300 - ((y / dropzoneHeight) * 200)).toFixed(2));
+
+        orderData.push({ character: character, color: colorName, x: plotX, y: plotY });
+        console.log(orderData);  // orderData가 어떻게 보내지는지 확인  
+      }
+
+      // 데이터를 백엔드로 전송
+      fetch("/sendData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status === "success") {
+            alert("주문이 성공적으로 전송되었습니다!");
+
+            const imageContainer = document.querySelector('.image-container');
+            const existingImg = imageContainer.querySelector('img');
+            if (existingImg) {
+              existingImg.remove();
+            }
+
+            const imgElement = document.createElement('img');
+            imgElement.src = data.image_url + `?t=${new Date().getTime()}`; // 캐시를 피하기 위해 타임스탬프 추가
+            imgElement.alt = "Robot Path Plot";
+            imgElement.style.width = "500px";
+            imgElement.onload = function () {
+              console.log("Image loaded successfully");
+            };
+            imgElement.onerror = function () {
+              console.error("Error loading image from URL:", imgElement.src);
+              alert("이미지를 로드할 수 없습니다. 이미지 경로를 확인해주세요.");
+            };
+            imageContainer.appendChild(imgElement);
+
+
+            while (dropzone.firstChild) {
+              dropzone.removeChild(dropzone.firstChild);
+            }
+
+            orderData = [];
+          } else {
+            alert("주문 전송에 실패했습니다.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("주문 전송 중 오류가 발생했습니다.");
+        });
+
+    }
+
+  </script>
+</body>
+
+</html>
